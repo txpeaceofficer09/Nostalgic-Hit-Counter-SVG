@@ -6,8 +6,6 @@ $mysqli = new mysqli('localhost', 'username', 'password', 'database');
 
 $mysqli->query("CREATE TABLE IF NOT EXISTS `hit_counter` ( `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY , `referer` TEXT NOT NULL UNIQUE , `hits` INT NOT NULL DEFAULT 0 );");
 
-$referer = 'unknown';
-
 if ( !empty($_SERVER['HTTP_REFERER']) ) {
         $parsed_url = parse_url($_SERVER['HTTP_REFERER']);
 
@@ -18,6 +16,8 @@ if ( !empty($_SERVER['HTTP_REFERER']) ) {
                 }
                 $referer = rtrim($referer, '/');
         }
+} else {
+        $referer = $_SERVER['REMOTE_ADDR'];
 }
 
 $cookie_name = "hit_counted_".md5($referer);
